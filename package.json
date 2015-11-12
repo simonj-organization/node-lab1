@@ -4,9 +4,11 @@
  	"description" : "Asynchronous Server Technologies Lab 1",
  	"main" : "app.js",
  	"dependencies" : {
-  		"http" 	: 	"latest"
+  		"http" 	: 	"latest",
+  		"url" 	:	"latest"  	
  	},
  	"devDependencies": {
     	"http" : "latest",
+    	"url" :	"latest"
   	}
 }
