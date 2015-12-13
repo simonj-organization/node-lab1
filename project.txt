@@ -1,0 +1,24 @@
+Final project:
+- based on code from class
+- simple dashboard app
+- user login
+- a user can insert me'trics
+- a user can retrieve his metrics displayed nicely in a graph
+- a user can access his own metrics
+- make frontend look good
+- use 3D JS and display metrics i.e. timestamp & value (for fronend)
+- create get and remove the metrics modlue
+- user postman to test the api
+- enhance the populatedb script to add multiple metric branches
+- to call populatedb use ./bin/populatedb or equivalent for windows
+
+
+Nodeman:
+- Watches dev files and restarts server after saving
+- npm i --save nodeman
+- nodemon src/app.coffee
+
+ExpressJS:
+- provides features for web app dev
+- create robust APIs
+- functions to expose front end

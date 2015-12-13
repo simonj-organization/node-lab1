@@ -1,15 +1,30 @@
 {
-  "name": "App",
+  "name": "TP12th",
   "version": "1.0.0",
-  "description": "Asynchronous Server Technologies Lab 1",
-  "main": "app.js",
+  "description": "Final project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://saliljnr@bitbucket.org/saliljnr/asynclabfinal.git"
+  },
+  "author": "Salil Junior <saliljnr@gmail.com> (http://saliljunior.com)",
+  "license": "ISC",
   "dependencies": {
-    "http": "latest",
-    "url": "latest"
+    "body-parser": "^1.14.1",
+    "coffee-script": "^1.10.0",
+    "express": "^4.13.3",
+    "jade": "^1.11.0",
+    "jstransformer-coffee-script": "^1.0.0",
+    "level-ws": "0.0.0",
+    "leveldown": "^1.4.2",
+    "levelup": "^1.3.1",
+    "nodemon": "^1.8.1"
   },
   "devDependencies": {
-    "http": "latest",
-    "should": "^7.1.1",
-    "url": "latest"
+    "mocha": "^2.3.4",
+    "should": "^7.1.1"
   }
 }
