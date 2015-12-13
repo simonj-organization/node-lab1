@@ -4,11 +4,14 @@ db = require('./db') "#{__dirname}/../db/metrics"
 levelup = require 'levelup' 
 db = levelup '../db/metrics', 'json'
 
+metricNextKey = null
+
+
 module.exports =
+
 ###
 	get()
 	------
-
 	Returns some hard coded metrics
 ###
 get: (id, callback) ->
@@ -24,7 +27,24 @@ get: (id, callback) ->
 	'callback': Callback function called at the oend or on error
 ###
 save: (id, metrics, callback) ->
-	db.put id, metrics, callback
+	if !id
+		if !metricNextKey
+			console.log "Init next Key"
+			ks = db.createKeyStream
+				reverse: true
+				limit: 1
+			ks.on 'data', (data) ->
+				metricNextKey = parseInt data
+				metricNextKey++
+				console.log metricNextKey
+				db.put metricNextKey, metrics, callback
+		else
+			metricNextKey++
+			console.log metricNextKey
+			db.put metricNextKey, metrics, callback
+	else
+		db.put id, metrics, callback
+
 
 ###
 	delete()

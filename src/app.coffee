@@ -1,4 +1,5 @@
 express = require 'express'
+morgan = require 'morgan' 
 app = express()
 metrics = require './metrics'
 
@@ -7,6 +8,8 @@ app.set 'views', "#{__dirname}/../views"
 app.set 'view engine', 'jade'
 app.use '/', express.static "#{__dirname}/../public"
 app.use require('body-parser')()
+app.use morgan 'dev'
+
 
 app.get '/', (req, res) ->
 	res.render 'index',
@@ -14,6 +17,7 @@ app.get '/', (req, res) ->
 			title: "My title could go here to be inserted in view"
 
 app.get '/metrics.json', (req, res) ->
+	#TODO return all the users metrics
 	res.json metrics.get()
 
 app.get '/hello/:name', (req, res) ->
@@ -31,10 +35,13 @@ app.delete '/metric/:id.json', (req, res) ->
 		if err then res.status(500).json err
 		res.status(200).send "Metrics deleted"
 
-app.post '/metric/:id.json', (req, res) ->
+app.post '/metric', (req, res) ->
 	metrics.save req.params.id, req.body, (err) ->
-		if err then res.status(500).json err
-		res.status(200).send "Metrics saved"
+		if err
+			console.log err
+			res.status(500).json err
+		else
+			res.status(201).send "Metrics saved"
 
 app.listen app.get('port'), () ->
 	console.log "listening on #{app.get 'port'}"
