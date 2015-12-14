@@ -48,19 +48,26 @@ app.get '/metric/:id.json', authCheck, (req, res) ->
 			res.status(500).json err
 		else
 			id = parseInt req.params.id 
-			if value.indexOf(id)<0
-				res.status(401).json "This is not your metrics"
+			if id
+				if value.indexOf(id)<0
+					res.status(401).send "This is not your metrics"
+				else
+					metrics.get id, (err, value) ->
+						if err
+							if err.notFound then res.status(404).send "Not found"
+							if !err.notFound then res.status(500).json err
+						res.status(200).json value
 			else
-				metrics.get req.params.id, (err, value) ->
-					if err
-						if err.notFound then res.status(404).json "Not found"
-						if !err.notFound then res.status(500).json err
-					res.status(200).json value
+				res.status(400).send "Bad request"
 
 app.delete '/metric/:id.json', authCheck, (req, res) ->
-	metrics.delete req.params.id, (err) ->
-		if err then res.status(500).json err
-		res.status(200).send "Metrics deleted"
+	id = parseInt req.params.id 
+	if id
+		metrics.delete id, (err) ->
+			if err then res.status(500).json err
+			res.status(200).send "Metrics deleted"
+	else
+		res.status(400).send "Bad request"
 
 
 app.post '/metric', authCheck, (req, res) ->
