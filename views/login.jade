@@ -1,0 +1,24 @@
+extend layout
+block head
+	title Login
+block content
+	#form
+	p Please login to your account
+	hr
+	form#login(action='/login', method="post")
+		.form-group
+			label Username
+			input(type='text', name="username")
+		.form-group
+			label Password
+			input(type='password', name="password")
+		button#login_submit.btn.btn-primary.btn-block(type='submit') 
+			i.icon-ok.icon-white
+			| Connect
+		hr
+		a.btn.btn-success.btn-block(type='button', href='/signup') Create an account
+
+	div.container
+		div.row
+			div.col-md-12
+				p #{locals.error}

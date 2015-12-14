@@ -1,11 +1,17 @@
 doctype html
 html
 	head
-		title #{locals.title}
 		//- here goes our CSS and JS
 		script(src="/js/jquery-2.1.4.js")
 		script(src="/js/bootstrap.min.js")
-		link(rel="stylsheet", href="/css/bootstrap.min.css")
+		script(src="/js/moment.min.js")
+		script(src="/js/bootstrap-datetimepicker.min.js")
+		link(rel="stylesheet", href="/css/bootstrap.min.css")
+		link(rel="stylesheet", href="/css/bootstrap-datetimepicker.min.css")
 		block head
 	body
+		div.container
+			div.row
+				div.col-md-12
+					button.btn.btn-danger(href='/logout' onClick='document.location.href="/logout"') Logout
 		block content

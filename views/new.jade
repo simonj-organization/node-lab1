@@ -1,0 +1,70 @@
+extend layout
+block head
+	title New Metrics
+block content
+	div.container
+		div.row
+			form
+				div.col-md-6
+					div.form-group
+						div.input-group
+							label name
+							input.form-control#Metricname(type='text')
+				div.col-md-6
+					div.form-group
+						div.input-group#datepicker
+							label timestamp
+							input.form-control#timestamp(type='text')
+							span.input-group-addon
+								span.glyphicon.glyphicon-calendar
+				div.col-md-6
+					div.form-group
+						div.input-group
+							label value
+							input.form-control#Metricvalue(type='number')
+
+				div.col-md-6
+					button#addMetric.btn.btn-primary.btn-block(type='button') Add Metric
+				div.col-md-6
+					button#saveMetric.btn.btn-primary.btn-block(type='button') Save Metrics
+		div.row
+			ul#metricsPreview
+		div.row
+			p#error
+
+	script
+		:coffee-script
+			metrics =
+				data: []
+			$('#datepicker').datetimepicker()
+			$('#addMetric').click (e) ->
+				date = $('#timestamp').val()
+				value = $('#Metricvalue').val()
+				if date == "" || value == "" then alert("Need a value and a timestamp")
+				else
+					metric = 
+						value: value
+						timestamp: new Date(date).getTime()
+					metrics.data.push metric
+					$('#metricsPreview').append $('<li>').text(metric.timestamp + ' / ' + metric.value)
+					console.log metric.data
+			$('#saveMetric').click (e) ->
+				name = $('#Metricname').val()
+				if name == ""
+					alert("Need a name");
+				else
+					metrics.name = name
+					console.log metrics
+					$.post '/metric', metrics
+						.done (data) ->
+							console.log data
+							window.location = "/"
+						.fail (jqXHR, textStatus, errorThrown) ->
+							if jqXHR.status == 404
+								$('#error').text("You don't have any metrics yet")
+							else
+								$('#error').text("We couldn't load your metrics")
+
+
+
+    

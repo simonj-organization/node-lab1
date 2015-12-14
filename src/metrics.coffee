@@ -1,6 +1,3 @@
-###
-db = require('./db') "#{__dirname}/../db/metrics"
-###
 levelup = require 'levelup' 
 db = levelup '../db/metrics', 'json'
 
@@ -34,16 +31,25 @@ save: (id, metrics, callback) ->
 				reverse: true
 				limit: 1
 			ks.on 'data', (data) ->
-				metricNextKey = parseInt data
+				if data
+					metricNextKey = parseInt data
+				else
+					metricNextKey = 0
 				metricNextKey++
 				console.log metricNextKey
-				db.put metricNextKey, metrics, callback
+				metrics.id = metricNextKey
+				db.put metricNextKey, metrics, (err) ->
+					callback(metrics.id, err)
 		else
 			metricNextKey++
 			console.log metricNextKey
-			db.put metricNextKey, metrics, callback
+			metrics.id = metricNextKey
+			db.put metricNextKey, metrics, (err) ->
+				callback(metrics.id, err)
 	else
-		db.put id, metrics, callback
+		metrics.id = id
+		db.put id, metrics, (err) ->
+			callback(metrics.id, err)
 
 
 ###
