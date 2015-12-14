@@ -1,43 +1,49 @@
 extend layout
-block head
-	title New Metrics
+block nav-header-form
+	form.navbar-form.navbar-right
+		a.btn.btn-danger(href='/logout') Logout
+block top-content
+	h1 Add new metrics
+	p You can create new metrics here and they shall be saved to the database for later retrieval.
 block content
-	div.container
-		div.row
+	div.row
+		div.col-md-12
 			form
-				div.col-md-6
-					div.form-group
-						div.input-group
-							label name
-							input.form-control#Metricname(type='text')
-				div.col-md-6
-					div.form-group
-						div.input-group#datepicker
-							label timestamp
-							input.form-control#timestamp(type='text')
-							span.input-group-addon
-								span.glyphicon.glyphicon-calendar
-				div.col-md-6
-					div.form-group
-						div.input-group
-							label value
-							input.form-control#Metricvalue(type='number')
-
-				div.col-md-6
-					button#addMetric.btn.btn-primary.btn-block(type='button') Add Metric
-				div.col-md-6
-					button#saveMetric.btn.btn-primary.btn-block(type='button') Save Metrics
-		div.row
+				div.form-group
+					label(for="Metricname") Metric name
+					input.form-control#Metricname(type="text", placeholder="Add metric name")
+				div.form-group.date
+					div.input-group.date#datepicker
+						input.form-control#timestamp(type="text", placeholder="Pick a date")
+						span.input-group-addon
+							span.glyphicon.glyphicon-calendar
+				div.form-group
+					label(for="Metricvalue") Metric value
+					input.form-control#Metricvalue(type="number", placeholder="Add metric value")
+				button.btn.btn-primary#addMetric(type="submit") Add metric
+				button.btn.btn-success#saveMetric(type="submit") Save metric
+	div.row
+		div.col-md-12
+			hr
+			div#chart
+	div.row
+		div.col-md-12
 			ul#metricsPreview
-		div.row
+	div.row
+		div.col-md-12
 			p#error
-
+block error-block
+	if typeof(locals.error) !== 'undefined'
+		div.alert.alert-danger
+			p #{locals.error}
+block scripts
 	script
 		:coffee-script
 			metrics =
 				data: []
 			$('#datepicker').datetimepicker()
 			$('#addMetric').click (e) ->
+				e.preventDefault()
 				date = $('#timestamp').val()
 				value = $('#Metricvalue').val()
 				if date == "" || value == "" then alert("Need a value and a timestamp")
@@ -49,6 +55,7 @@ block content
 					$('#metricsPreview').append $('<li>').text(metric.timestamp + ' / ' + metric.value)
 					console.log metric.data
 			$('#saveMetric').click (e) ->
+				e.preventDefault()
 				name = $('#Metricname').val()
 				if name == ""
 					alert("Need a name");

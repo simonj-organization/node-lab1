@@ -1,16 +1,30 @@
 extend layout
+block nav-header-form
+	form.navbar-form.navbar-right
+		a.btn.btn-danger(href='/logout') Logout
+block top-content
+	h1 Welcome to the metrics dasboard
+	p You are now logged into your account. View and manage your metric data below.
 block content
-	div.container
-		div.row
-			div.col-md-6
-				select#metricSelect
-			div.col-md-6
+	div.row
+		div.col-md-4
+			form.form-inline
+				div.form-group
+					select.form-control#metricSelect
+		div.col-md-4
+			form.form-inline
 				button.btn.btn-success#plot-metrics Plot Metrics
-		div.row
+		div.col-md-4
+			form.form-inline
+				a.btn.btn-primary(href='metric/new') New Metrics
+	div.row
+		div.col-md-12
 			p#error
-		div.row
-			a(href='metric/new') New Metrics
-
+block error-block
+	if typeof(locals.error) !== 'undefined'
+		div.alert.alert-danger
+			p #{locals.error}
+block scripts
 	script
 		:coffee-script
 			metrics = []
@@ -18,6 +32,7 @@ block content
 				$.get '/userMetrics.json'
 					.done (data) ->
 						for id in data
+							console.log("data: "+id)
 							$.getJSON '/metric/'+id+'.json', (data) ->
 								console.log data
 								metrics.push(data)

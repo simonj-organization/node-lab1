@@ -1,27 +1,32 @@
 extend layout
-block head
-	title Signup
+block nav-header-form
+	form.navbar-form.navbar-right#login(action="/login" method="post")
+		div.form-group
+			input.form-control(type="text" placeholder="Username" name="username")
+		div.form-group
+			input.form-control(type="password" placeholder="Password" name="password")
+		button.btn.btn-success#login_submit(type="submit") Connect
+block top-content
+	h1 Create an account
+	p Enter details below to create an account and gain access to metrics system.
 block content
-	#form
-	p Please login to your account
-	hr
-	form#login(action='/signup', method="post")
-		.form-group
-			label Username
-			input(type='text', name="username")
-		.form-group
-			label Password
-			input(type='password', name="password")
-		.form-group
-			label Name
-			input(type='text', name="name")
-		.form-group
-			label Email
-			input(type='text', name="email")
-		button#login_submit.btn.btn-primary.btn-block(type='submit') 
-			i.icon-ok.icon-white
-			| Create an account
-	div.container
-		div.row
-			div.col-md-12
-				p #{locals.error}
+	div.row
+		div.col-md-12
+			form#login(action='/signup', method="post")
+				div.form-group
+					label(for="username") Username
+					input.form-control(type="text" name="username" placeholder="Add username")
+				div.form-group
+					label(for="password") Password
+					input.form-control(type="password" name="password" placeholder="Add password")
+				div.form-group
+					label(for="name") Name
+					input.form-control(type="text" name="name" placeholder="Add name")
+				div.form-group
+					label(for="email") Email
+					input.form-control(type="email" name="email" placeholder="Add email")
+				button.btn.btn-primary#login_submit(type="submit") Create account	
+block error-block
+	if typeof(locals.error) !== 'undefined'
+		div.alert.alert-danger
+			p #{locals.error}

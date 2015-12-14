@@ -5,13 +5,40 @@ html
 		script(src="/js/jquery-2.1.4.js")
 		script(src="/js/bootstrap.min.js")
 		script(src="/js/moment.min.js")
+		script(src="/js/d3.min.js")
 		script(src="/js/bootstrap-datetimepicker.min.js")
 		link(rel="stylesheet", href="/css/bootstrap.min.css")
 		link(rel="stylesheet", href="/css/bootstrap-datetimepicker.min.css")
+		link(rel="stylesheet", href="/css/custom2.css")
 		block head
 	body
+		nav.navbar.navbar-inverse.navbar-fixed-top
+			div.container
+				div.navbar-header
+					button.navbar-toggle.collapsed(type="button" data-toggle="collapse" data-target="#navbar")
+						span.icon-bar 
+						span.icon-bar 
+						span.icon-bar
+					a.navbar-brand(href="#") User Metrics Dashboard
+				div.navbar-collapse.collapse(id="navbar")
+					ul.nav.navbar-nav
+						li.active
+							a(href="/") Home
+						li
+							a(href="/metric/new") New metrics
+					block nav-header-form
+		div.jumbotron
+			div.container-fluid
+				block error-block
+			div.container
+				block top-content
 		div.container
 			div.row
 				div.col-md-12
-					button.btn.btn-danger(href='/logout' onClick='document.location.href="/logout"') Logout
-		block content
+					block content
+					hr
+		div.container
+			div.row
+				div.col-md-12
+					block content2
+		block scripts

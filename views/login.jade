@@ -1,24 +1,20 @@
 extend layout
 block head
 	title Login
+block nav-header-form
+	form.navbar-form.navbar-right#login(action="/login" method="post")
+		div.form-group
+			input.form-control(type="text" placeholder="Username" name="username")
+		div.form-group
+			input.form-control(type="password" placeholder="Password" name="password")
+		button.btn.btn-success#login_submit(type="submit") Connect
+		a.btn.btn-default(href='/signup') Create an account
+block top-content
+	h1 Welcome to the metrics dasboard
+	p To view and manage your metric data, kindly logon with your username and password OR create an account if you don't have one already.
 block content
-	#form
-	p Please login to your account
-	hr
-	form#login(action='/login', method="post")
-		.form-group
-			label Username
-			input(type='text', name="username")
-		.form-group
-			label Password
-			input(type='password', name="password")
-		button#login_submit.btn.btn-primary.btn-block(type='submit') 
-			i.icon-ok.icon-white
-			| Connect
-		hr
-		a.btn.btn-success.btn-block(type='button', href='/signup') Create an account
-
-	div.container
-		div.row
-			div.col-md-12
-				p #{locals.error}
+	p Here goes sample D3js graphs...
+block error-block
+	if typeof(locals.error) !== 'undefined'
+		div.alert.alert-danger
+			p #{locals.error}

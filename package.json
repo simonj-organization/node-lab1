@@ -23,7 +23,8 @@
     "level-session-store": "^2.0.1",
     "level-ws": "0.0.0",
     "morgan": "^1.6.1",
-    "nodemon": "^1.8.1"
+    "nodemon": "^1.8.1",
+    "stylus": "^0.53.0"
   },
   "devDependencies": {
     "mocha": "^2.3.4",

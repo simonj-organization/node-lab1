@@ -9,6 +9,12 @@ LevelStore = require('level-session-store')(session)
 app.set 'port', 1337
 app.set 'views', "#{__dirname}/../views"
 app.set 'view engine', 'jade'
+app.use require('stylus').middleware(
+  src: __dirname + '/public'
+  force: true
+  compile: (str, path) ->
+    stylus(str).set('filename', path).set 'compress', true
+)
 app.use '/', express.static "#{__dirname}/../public"
 app.use require('body-parser')()
 app.use morgan 'dev'
@@ -17,6 +23,7 @@ app.use session
 	store: new LevelStore '../db/sessions' 
 	resave: true
 	saveUninitialized: true
+
 
 authCheck = (req, res, next) -> 
 	unless req.session.loggedIn == true
