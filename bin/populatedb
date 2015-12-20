@@ -7,6 +7,8 @@ exec "rm -rf #{__dirname}/../db/metrics && mkdir #{__dirname}/../db/metrics", (e
 
 	# Require after rm and mkdir or DB is deleted once in callback
 	metrics = require '../src/metrics'
+	user = require '../src/user'
+	userMetrics = require '../src/user-metrics'
 
 	console.log 'DB deleted'
 	console.log 'Creating metrics'
@@ -60,3 +62,13 @@ exec "rm -rf #{__dirname}/../db/metrics && mkdir #{__dirname}/../db/metrics", (e
 	for metric, index in met
 		console.log "Saving batch #{index + 1} " + metric.name
 		metrics.save index+1, metric, (err) -> return err if err
+
+	user0 = {
+		username: "default"
+		password: "default"
+		name: "default"
+		email: "default@default.com"
+	}
+	user.save user0, (err, data) -> return err if err
+	userMetrics.save user0.username, [1,2], (err, value) -> return err if err
+	console.log "Saving User 'default'"

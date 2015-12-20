@@ -30,18 +30,6 @@ block scripts
 		:coffee-script
 			metrics = []
 			$ () ->
-				#For test purposes
-				for x in demodata
-					option = $ '<option>',
-						value: x.id
-						name: x.name
-					option.text(x.name)
-					$('#metricSelect').append(option)
-				val = $('select').val()
-				if val != undefined
-					loadD3(val)
-				#End For test purposes
-
 				$('#metricSelect').on 'change', ->
 					val = $(this).val()
 					if val != undefined
@@ -131,12 +119,11 @@ block scripts
 				# select the metric for give ID
 				item = null
 				i = 0
-				while i < demodata.length
-					element = demodata[i]
+				while i < metrics.length
+					element = metrics[i]
 					if element.id == parseInt val
 						item = element
 						InitChart item.data
 						console.log JSON.stringify item
 						break
 					i++
-				# now let's initialize and load D3 graph
