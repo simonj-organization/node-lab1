@@ -1,9 +1,10 @@
 var demodata = [
 {"name":"metric 1","data":[{"timestamp":1448965800000,"value":26},{"timestamp":1448966100000,"value":23},{"timestamp":1448966400000,"value":20},{"timestamp":1448966700000,"value":19},{"timestamp":1448967000000,"value":18},{"timestamp":1448967300000,"value":20}],"id":1},
-{"name":"metric 2","data":[{"timestamp":1448965800000,"value":26},{"timestamp":1448966100000,"value":23},{"timestamp":1448966400000,"value":20},{"timestamp":1448966700000,"value":19},{"timestamp":1448967000000,"value":18},{"timestamp":1448967300000,"value":20}],"id":2}
+{"name":"metric 2","data":[{"timestamp":1448965800000,"value":13},{"timestamp":1448966100000,"value":21},{"timestamp":1448966400000,"value":18},{"timestamp":1448966700000,"value":26},{"timestamp":1448967000000,"value":18},{"timestamp":1448967300000,"value":20}],"id":2}
 ]
-var seldata = demodata[0].data;
 /*
+var seldata = demodata[0].data;
+
 function InitChart(myData) {
 	var dataGroup = d3.nest()
 	.key(function(d) {return "Time stamp";})
