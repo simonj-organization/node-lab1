@@ -5,16 +5,22 @@ metrics = require './metrics'
 user = require './user'
 userMetrics = require './user-metrics'
 session = require 'express-session'
+stylus = require 'stylus'
+nib = require 'nib'
 LevelStore = require('level-session-store')(session)
 app.set 'port', 1337
 app.set 'views', "#{__dirname}/../views"
 app.set 'view engine', 'jade'
-app.use require('stylus').middleware(
-  src: __dirname + '/public'
-  force: true
-  compile: (str, path) ->
-    stylus(str).set('filename', path).set 'compress', true
-)
+
+compile = (str, path) ->
+	stylus(str)
+		.set('filename', path)
+		.use(nib())
+
+app.use stylus.middleware
+  src: '#{__dirname}/../public'
+  compile: compile
+
 app.use '/', express.static "#{__dirname}/../public"
 app.use require('body-parser')()
 app.use morgan 'dev'
@@ -25,7 +31,7 @@ app.use session
 	saveUninitialized: true
 
 
-authCheck = (req, res, next) -> 
+authCheck = (req, res, next) ->
 	unless req.session.loggedIn == true
 		res.redirect '/login' 
 	else

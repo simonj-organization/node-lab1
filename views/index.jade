@@ -19,6 +19,10 @@ block content
 				a.btn.btn-primary(href='metric/new') New Metrics
 	div.row
 		div.col-md-12
+			hr
+			svg#chartD3(width='100%', height='600px')
+	div.row
+		div.col-md-12
 			p#error
 block error-block
 	if typeof(locals.error) !== 'undefined'
@@ -32,7 +36,6 @@ block scripts
 				$.get '/userMetrics.json'
 					.done (data) ->
 						for id in data
-							console.log("data: "+id)
 							$.getJSON '/metric/'+id+'.json', (data) ->
 								console.log data
 								metrics.push(data)
@@ -46,4 +49,88 @@ block scripts
 							$('#error').text("You don't have any metrics yet")
 						else
 							$('#error').text("We couldn't load your metrics")
-						
+			InitChart = (myData) ->
+			  	dataGroup = d3.nest().key((d) ->
+			    	'Time stamp'
+			  	).entries(myData)
+			  	color = d3.scale.category10()
+			  	vis = d3.select('#chartD3')
+			  	WIDTH = 1000
+			  	HEIGHT = 500
+			  	MARGINS = 
+			    	top: 50
+			    	right: 20
+			    	bottom: 50
+			    	left: 50
+			  	lSpace = WIDTH / dataGroup.length
+			  	xScale = d3.time.scale.utc().range([
+			    	MARGINS.left
+			    	WIDTH - (MARGINS.right)
+			  	]).domain([
+			    	d3.min(myData, (d) ->
+			      		d.timestamp
+			    	)
+			    	d3.max(myData, (d) ->
+			      		d.timestamp
+			    	)
+			  	])
+			  	yScale = d3.scale.linear().range([
+			    	HEIGHT - (MARGINS.top)
+			    	MARGINS.bottom
+			  	]).domain([
+			    	d3.min(myData, (d) ->
+			     		0
+			    	)
+			    	d3.max(myData, (d) ->
+			      		d.value + 10
+			    	)
+			  	])
+			  	xAxis = d3.svg.axis().scale(xScale)
+			  	yAxis = d3.svg.axis().scale(yScale).orient('left')
+			  	vis.append('svg:g').attr('class', 'x axis').attr('transform', 'translate(0,' + HEIGHT - (MARGINS.bottom) + ')').call xAxis
+			  	vis.append('svg:g').attr('class', 'y axis').attr('transform', 'translate(' + MARGINS.left + ',0)').call yAxis
+			  	lineGen = d3.svg.line().x((d) ->
+			    	xScale d.timestamp
+			  	).y((d) ->
+			    	yScale d.value
+			  	).interpolate('basis')
+			  	dataGroup.forEach (d, i) ->
+			    	vis.append('svg:path').attr('d', lineGen(d.values)).attr('stroke', (d, j) ->
+			      	'hsl(' + Math.random() * 360 + ',100%,50%)'
+			    	).attr('stroke-width', 2).attr('id', 'line_' + d.key).attr 'fill', 'none'
+			    	vis.append('text').attr('x', lSpace / 2 + i * lSpace).attr('y', HEIGHT).style('fill', 'black').attr('class', 'legend').on('click', ->
+			      	active = if d.active then false else true
+			      	opacity = if active then 0 else 1
+			      	d3.select('#line_' + d.key).style 'opacity', opacity
+			      	d.active = active
+			      	return
+			    	).text d.key
+			    	return
+			  	return
+			loadD3 = (val) ->
+				# select the metric for give ID
+				item = null
+				i = 0
+				while i < demodata.length
+					element = demodata[i]
+					if element.id == parseInt val
+						item = element
+						InitChart item.data
+						console.log JSON.stringify item
+					i++
+				# now let's initialize and load D3 graph
+			jQuery(document).ready ->
+				for x in demodata
+					option = $ '<option>',
+						value: x.id
+						name: x.name
+					option.text(x.name)
+					$('#metricSelect').append(option)
+				val = $('select').val()
+				if val != undefined
+					loadD3(val)
+				$('#metricSelect').on 'change', ->
+					val = $(this).val()
+					if val != undefined
+						loadD3(val)
+					return

@@ -58,6 +58,5 @@ exec 'rm -rf "#{__dirname}/../db/metrics" && mkdir "#{__dirname}/../db/metrics"'
 	]
 
 	console.log met
-	for metric, index in met
-		console.log "Saving batch #{index + 1} " + metric.name
-		metrics.save index+1, metric, (err) -> return err if err
+	metrics.get 1, (err, value) ->
+ 		console.log value
