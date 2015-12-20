@@ -15,22 +15,22 @@ exec "rm -rf #{__dirname}/../db/metrics && mkdir #{__dirname}/../db/metrics", (e
 		data:
 			[
 				timestamp: new Date('2015-12-01 10:30 UTC').getTime(),
-				value: 26
+				value: 22
 			,
 				timestamp: new Date('2015-12-01 10:35 UTC').getTime(),
-				value: 23
+				value: 16
 			,
 				timestamp: new Date('2015-12-01 10:40 UTC').getTime(),
-				value: 20
+				value: 28
 			,
 				timestamp: new Date('2015-12-01 10:45 UTC').getTime(),
 				value: 19
 			,
 				timestamp: new Date('2015-12-01 10:50 UTC').getTime(),
-				value: 18
+				value: 24
 			,
 				timestamp: new Date('2015-12-01 10:55 UTC').getTime(),
-				value: 20
+				value: 27
 			]
 	,
 		name: "metric 2"
