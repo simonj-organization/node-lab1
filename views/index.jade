@@ -33,8 +33,26 @@ block scripts
 		:coffee-script
 			metrics = []
 			$ () ->
+				#For test purposes
+				for x in demodata
+					option = $ '<option>',
+						value: x.id
+						name: x.name
+					option.text(x.name)
+					$('#metricSelect').append(option)
+				val = $('select').val()
+				if val != undefined
+					loadD3(val)
+				#End For test purposes
+
+				$('#metricSelect').on 'change', ->
+					val = $(this).val()
+					if val != undefined
+						loadD3(val)
+					return
 				$.get '/userMetrics.json'
 					.done (data) ->
+						done = false
 						for id in data
 							$.getJSON '/metric/'+id+'.json', (data) ->
 								console.log data
@@ -44,6 +62,10 @@ block scripts
 									name: data.name
 								option.text(data.name)
 								$('#metricSelect').append(option)
+								if !done
+									done = true
+									InitChart data.data
+
 					.fail (jqXHR, textStatus, errorThrown) ->
 						if jqXHR.status == 404
 							$('#error').text("You don't have any metrics yet")
@@ -117,20 +139,6 @@ block scripts
 						item = element
 						InitChart item.data
 						console.log JSON.stringify item
+						break
 					i++
 				# now let's initialize and load D3 graph
-			jQuery(document).ready ->
-				for x in demodata
-					option = $ '<option>',
-						value: x.id
-						name: x.name
-					option.text(x.name)
-					$('#metricSelect').append(option)
-				val = $('select').val()
-				if val != undefined
-					loadD3(val)
-				$('#metricSelect').on 'change', ->
-					val = $(this).val()
-					if val != undefined
-						loadD3(val)
-					return
